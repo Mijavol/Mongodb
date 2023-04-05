@@ -7,15 +7,40 @@
     //num6 db.restaurants.find({ "borough" : "Bronx"}).limit(5)
     //num7 db.restaurants.find({ "borough" : "Bronx"}).skip(5).limit(5)
     //num8 db.restaurants.find({"grades.score": {$gt : 90}})
+    
+    
+   
+   
     //num9 db.restaurants.find({"grades.score":{ $lt: 100, $gt : 80 }})
+    correcion : db.restaurants.find({grades : { $elemMatch:{"score":{$gt : 80 , $lt :100}}}});
+    
     //num10 db.restaurants.find({"address.coord" : { $lt : -95.754168}})
+    correcion : db.restaurants.find({"address.coord" : {$lt : -95.754168}});
+    
     //num11 db.restaurants.find({ $and : [{"address.coord" : { $lt : -65.754168}}, 
                                           {"grades.score":{ $gt : 70 }}, 
                                           {"cuisine": {$not :{$regex : "American"}}}]})
     
+    correcion : db.restaurants.find(
+               {$and:
+                       [{"cuisine" : {$ne :"American "}},
+                       {"grades.score" : {$gt : 70}},
+                       {"address.coord" : {$lt : -65.754168}} ]});
+                    
+    
+    
     //num12 db.restaurants.find({"address.coord" : { $lt : -65.754168},
                                 "grades.score":{ $gt : 70 }, 
                                 "cuisine":{ $not : {$regex : "American"}}})
+    
+    correcion : db.restaurants.find(
+                            { "cuisine" : {$ne : "American "},
+                             "grades.score" :{$gt: 70},
+                             "address.coord" : {$lt : -65.754168} });
+    
+    
+    
+    
     
     //num13 db.restaurants.find({"grades.grade":{ $regex : "A" },
                                  "cuisine":{ $not : {$regex : "American"}},
@@ -56,6 +81,20 @@
                                 { $nor :[{ "cuisine" : { $eq : "American"}} , 
                                 {"cuisine" :{ $eq : "Chinese"}}]} ]  } , 
                                 {"restaurant_id" : 1,"name":1,"borough" : 1,"cuisine":1})
+    
+    
+    correcion : db.restaurants.find({$or: [
+                                 {"name": /^Wil/}, 
+                                 {"$and": [
+                                 {"cuisine" : {$ne :"American "}}, 
+                                 {"cuisine" : {$ne :"Chinees"}}]} ]},
+                                 {"restaurant_id" : 1,"name":1,"borough":1,"cuisine" :1});
+
+
+    
+    
+    
+    
     
     //num22 db.restaurants.find({ $and : [  {"grades.grade" : { $eq : "A"}}, 
                                 { "grades.score" : { $eq : 11 }} , 
